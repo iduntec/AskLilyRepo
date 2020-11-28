@@ -46,13 +46,9 @@ def print_labels(RCFC_label_object):
         print('\n')
     else:
         print('Detected Labels:')
-        labels = []
         for d in RCFC_label_object:
-            labels.append('{} ({}%)'.format(d.description, int(100 * round(d.score, 2))))
-            # print('{} ({}%)'.format(d.description, int(100 * round(d.score, 2))))
-        for i in range(len(labels)):
-            print(labels[i] + ' |'),
-        print ('\n')
+            print('Description: {} ({}%)'.format(d.description, int(100 * round(d.score, 2))))
+        print('\n')
 
 
 def get_picture_vision_api_object_localization(imag):
@@ -67,20 +63,7 @@ def get_picture_vision_api_object_localization(imag):
     return result
 
 
-def update_box_name(box, current_boxes_dict):
-    # this function change's the box's name if there are more like her in the dict
-    # so there wouldn't be more the one similar key
-    key_list = current_boxes_dict.keys()
-    name_occurrences_counter = 0
-    for element in key_list:
-        if box.name in element:
-            name_occurrences_counter = name_occurrences_counter + 1
-
-    if name_occurrences_counter != 0:
-        box.name = box.name + '_' + str(name_occurrences_counter)
-
-
-def localization_crops_object_to_boxes_dict(complete_img, localization_object):
+def localization_crops_object_to_boxes_dict(complete_img, localization_object, output_fold):
     """
     turns the google data structure into a dictionary of AnnotationBox(es)
     :param localization_object:
@@ -88,9 +71,6 @@ def localization_crops_object_to_boxes_dict(complete_img, localization_object):
     """
     boxes_dict = {}
     for box in localization_object:
-        if box.name in boxes_dict:
-            update_box_name(box, boxes_dict)
-
         box_annotation = box.name
         box_score = box.score
 
@@ -101,7 +81,7 @@ def localization_crops_object_to_boxes_dict(complete_img, localization_object):
         box_right_down_coordinate = [box_right_down.x, box_right_down.y]
 
         tmp_box = handle_annotations.AnnotationBox(complete_img, box_annotation, box_score, box_left_up_coordinate,
-                                                   box_right_down_coordinate)
+                                                   box_right_down_coordinate, output_fold)
         boxes_dict.update({box.name: tmp_box})
 
     return boxes_dict
@@ -121,10 +101,19 @@ def url_to_image(url):
 
 if __name__ == "__main__":
 
-    input_path = "https://rinazin.com/wp-content/uploads/2020/08/2010017301-2.jpg"
+    input_path = "https://rinazin.com/wp-content/uploads/2020/09/2010058001-2-scaled.jpg"
 
+    # OPTION 1 - use web path :
     image_path = input_path
+    # image_file = url_to_image(input_path)
     image_object = get_web_or_load_local_image(image_path)
+
+    # OPTION 2 -  download and save image:
+    # image_file = url_to_image(input_path)
+    # image_file_name = os.path.basename(urlparse(input_path).path + '.png')
+    downloaded_pictures_folder_path = "C:\\Users\\Idan\\Desktop\\AskLily files\\random clothing pictures"
+    # image_path = os.path.join(downloaded_pictures_folder_path, image_file_name)
+    # cv2.imwrite(local_image_path, image_file)
 
     # plot image:
     # cv2.imshow("Image", downloaded_image)
@@ -139,11 +128,12 @@ if __name__ == "__main__":
 
     image_ndarray = url_to_image(image_object.source.image_uri)
     # translate google's crops object into dictionary :
-    annotate_boxes_dict = localization_crops_object_to_boxes_dict(image_ndarray, localized_crops)
+    annotate_boxes_dict = localization_crops_object_to_boxes_dict(image_ndarray, localized_crops,
+                                                                  downloaded_pictures_folder_path)
 
     # print and save annotations as new images
     handle_annotations.print_annotations_boxes_dictionary(annotate_boxes_dict)
-    # handle_annotations.save_annotations_boxes_dictionary(annotate_boxes_dict)
+    handle_annotations.save_annotations_boxes_dictionary(annotate_boxes_dict)
 
     # get labels for cropped annotations:
     for annotating_box in annotate_boxes_dict.values():

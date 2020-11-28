@@ -29,7 +29,7 @@ def label_image():
     #     # cv2.waitKey(0)
     #
     # get labels for whole picture:
-    labels_data = vision_api_funcs.get_picture_vision_api_labels_by_path(file_path)
+    labels_data = vision_api_funcs.get_picture_vision_api_labels(file_path)
     vision_api_funcs.print_labels(labels_data)
 
 
