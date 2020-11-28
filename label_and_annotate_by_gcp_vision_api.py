@@ -6,7 +6,7 @@ from google.cloud import vision
 from google.cloud.vision import types
 import numpy as np
 import handle_annotations
-import urlOpenerClass
+import url_opener_class
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = \
     "C:\Users\Idan\Desktop\AskLily files\My First Project-834fa920a8ad.json"
@@ -110,7 +110,7 @@ def localization_crops_object_to_boxes_dict(complete_img, localization_object):
 def url_to_image(url):
     # download the image, convert it to a NumPy array, and then read
     # it into OpenCV format
-    opener = urlOpenerClass.UrlOpener()
+    opener = url_opener_class.UrlOpener()
     opener.retrieve('http://www.useragent.org/', 'useragent.html')
     resp = opener.open(url)
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
