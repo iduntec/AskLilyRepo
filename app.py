@@ -30,7 +30,7 @@ def label_image():
     #
     # get labels for whole picture:
     labels_data = vision_api_funcs.get_picture_vision_api_labels(file_path)
-    vision_api_funcs.print_labels(labels_data)
+    vision_api_funcs.print_and_return_labels(labels_data)
 
 
 root = tk.Tk()  # instance of the GUI

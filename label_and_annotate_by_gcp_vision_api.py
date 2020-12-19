@@ -40,7 +40,10 @@ def get_picture_vision_api_labels(img):
     return result
 
 
-def print_labels(RCFC_label_object):
+def print_and_return_labels(RCFC_label_object):
+    output_label_list = []
+    scores_list = []
+
     if not RCFC_label_object:
         print ('No labels detected.')
         print('\n')
@@ -49,10 +52,13 @@ def print_labels(RCFC_label_object):
         labels = []
         for d in RCFC_label_object:
             labels.append('{} ({}%)'.format(d.description, int(100 * round(d.score, 2))))
+            output_label_list.append(d.description)
+            scores_list.append(round(d.score, 2))
             # print('{} ({}%)'.format(d.description, int(100 * round(d.score, 2))))
         for i in range(len(labels)):
             print(labels[i] + ' |'),
         print ('\n')
+    return output_label_list, scores_list
 
 
 def get_picture_vision_api_object_localization(imag):
@@ -80,12 +86,17 @@ def update_box_name(box, current_boxes_dict):
         box.name = box.name + '_' + str(name_occurrences_counter)
 
 
-def localization_crops_object_to_boxes_dict(complete_img, localization_object):
+def localization_crops_object_to_boxes_dict(complete_img_obj, localization_object):
     """
     turns the google data structure into a dictionary of AnnotationBox(es)
     :param localization_object:
     :return: dictionary holding all the annotation boxes and their data
     """
+
+    # get ndarray pic from url
+    item_url = complete_img_obj.source.image_uri
+    complete_img = url_to_image(item_url)
+
     boxes_dict = {}
     for box in localization_object:
         if box.name in boxes_dict:
@@ -101,7 +112,7 @@ def localization_crops_object_to_boxes_dict(complete_img, localization_object):
         box_right_down_coordinate = [box_right_down.x, box_right_down.y]
 
         tmp_box = handle_annotations.AnnotationBox(complete_img, box_annotation, box_score, box_left_up_coordinate,
-                                                   box_right_down_coordinate)
+                                                   box_right_down_coordinate, item_url)
         boxes_dict.update({box.name: tmp_box})
 
     return boxes_dict
@@ -115,31 +126,24 @@ def url_to_image(url):
     resp = opener.open(url)
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
     image = cv2.imdecode(image, cv2.COLOR_BGR2RGB)
-
+    opener.close()
     return image
 
 
 if __name__ == "__main__":
 
-    input_path = "https://rinazin.com/wp-content/uploads/2020/08/2010017301-2.jpg"
-
-    image_path = input_path
-    image_object = get_web_or_load_local_image(image_path)
-
-    # plot image:
-    # cv2.imshow("Image", downloaded_image)
-    # cv2.waitKey(0)
+    input_path = 'https://rinazin.com/wp-content/uploads/2019/12/1970014001.jpg'
+    image_object = get_web_or_load_local_image(input_path)
 
     # get labels for whole picture:
     labels_data = get_picture_vision_api_labels(image_object)
-    print_labels(labels_data)
+    print_and_return_labels(labels_data)
 
     # localize objects:
     localized_crops = get_picture_vision_api_object_localization(image_object)  # get localized crops from google
 
-    image_ndarray = url_to_image(image_object.source.image_uri)
     # translate google's crops object into dictionary :
-    annotate_boxes_dict = localization_crops_object_to_boxes_dict(image_ndarray, localized_crops)
+    annotate_boxes_dict = localization_crops_object_to_boxes_dict(image_object, localized_crops)
 
     # print and save annotations as new images
     handle_annotations.print_annotations_boxes_dictionary(annotate_boxes_dict)
@@ -149,4 +153,6 @@ if __name__ == "__main__":
     for annotating_box in annotate_boxes_dict.values():
         annotation_labels = get_picture_vision_api_labels(annotating_box.cropped_box_typeImage)
         print ('Labels for annotation: {}'.format(annotating_box.annotation_name))
-        print_labels(annotation_labels)
+        print_and_return_labels(annotation_labels)
+
+    print('End')

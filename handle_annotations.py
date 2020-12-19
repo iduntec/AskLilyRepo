@@ -9,7 +9,7 @@ class AnnotationBox(object):
     This class uses Google's localization_object object
     """
 
-    def __init__(self, image, annotation_name, score, normalized_left_up_dot, normalized_right_down_dot):
+    def __init__(self, image, annotation_name, score, normalized_left_up_dot, normalized_right_down_dot, item_url_in):
         self.input_img = image
         self.annotation_name = annotation_name
         self.score = score
@@ -17,6 +17,7 @@ class AnnotationBox(object):
         self.right_down_dot = self.normalized_to_regular_coordinate(normalized_right_down_dot)
         self.cropped_box_ndarray = self.crop_box_annotation()
         self.cropped_box_typeImage = self.ndarray_to_image_type()
+        self.item_url = item_url_in
 
         # self.complete_output_path = self.create_output_file_path(out_folder)
 
@@ -72,6 +73,7 @@ def print_annotations_boxes_dictionary(dictionary):
             ax.axis('off')
         plt.show()
         print('\n')
+
 
 
 def save_annotations_boxes_dictionary(dictionary):

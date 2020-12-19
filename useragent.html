@@ -1,47 +1,46 @@
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>UserAgent.org</title>
-            <script type="text/javascript">;
-        if(self != top) top.location.href = 'http://'+location.hostname+'/?redir=frame&uid=www5fc26b32e42055.24430399';
-        </script>
-            <script type="text/javascript" src="http://return.uk.uniregistry.com/return_js.php?d=useragent.org&s=1606576946"></script>
-    
-    
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
-    <script type="text/javascript">
-        function GetParam(name) {
-            var match = new RegExp(name +
-                "=*([^&]+)*", "i").exec(location.search);
-            if (match == null)
-                match = new RegExp(name + "=(.+)", "i").exec(location.search);
-            if (match == null) return null;
-                match = match + "";
-            //**convert match to a string
-            result = match.split(",");
-            return decodeURIComponent(result[1]);
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<script type="text/javascript">
+function getCookie(c_name) { // Local function for getting a cookie value
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start!=-1) {
+        c_start=c_start + c_name.length + 1;
+        c_end=document.cookie.indexOf(";", c_start);
+
+        if (c_end==-1) 
+            c_end = document.cookie.length;
+
+        return unescape(document.cookie.substring(c_start,c_end));
         }
-
-        function logStatus(type) {
-            $.ajax({
-                cache: false,
-                global: false,
-                async: true,
-                type: "POST",
-                url: '/logpstatus.php',
-                data: {uid: GetParam('uid'), type: type}
-            });
-        }
-    </script>
-
-    </head>
-    <frameset cols="1,*,1" border=0>
-        <frame name="top" src="tg.php?uid=www5fc26b32e42055.24430399" scrolling=no frameborder=0 noresize framespacing=0 marginwidth=0 marginheight=0>
-        <frame src="search_caf.php?uid=www5fc26b32e42055.24430399&src=mountains&abp=1" scrolling="auto" framespacing=0 marginwidth=0 marginheight=0 noresize>
-        <frame src="page.php?www5fc26b32e42055.24430399"></frame>
-    </frameset>
-    <noframes>
-        useragent.org has been connecting our visitors with providers of Commercial Real Estate, Home Insurance, Industrial Real Estate and many other related services for nearly 10 years. Join thousands of satisfied visitors who found Mortgage Brokers, Mortgages, Property Management, Real Estate Advice, and Real Estate Agents.<br/>    </noframes>
-
+    }
+    return "";
+}
+function setCookie(c_name, value, expiredays) { // Local function for setting a value of a cookie
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate()+expiredays);
+    document.cookie = c_name + "=" + escape(value) + ((expiredays==null) ? "" : ";expires=" + exdate.toGMTString()) + ";path=/";
+}
+function getHostUri() {
+    var loc = document.location;
+    return loc.toString();
+}
+setCookie('YPF8827340282Jdskjhfiw_928937459182JAX666', '77.124.66.75', 10);
+try {  
+    location.reload(true);  
+} catch (err1) {  
+    try {  
+        location.reload();  
+    } catch (err2) {  
+    	location.href = getHostUri();  
+    }  
+}
+</script>
+</head>
+<body>
+<noscript>This site requires JavaScript and Cookies to be enabled. Please change your browser settings or upgrade your browser.</noscript>
+</body>
 </html>
-
