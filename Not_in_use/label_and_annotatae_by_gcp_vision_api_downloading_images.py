@@ -1,12 +1,10 @@
 import io
 import os
-from urlparse import urlparse
 import cv2
 from google.cloud import vision
 from google.cloud.vision import types
 import numpy as np
-import handle_annotations
-import url_opener_class
+from vision_api import handle_annotations, url_opener_class
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = \
     "C:\Users\Idan\Desktop\AskLily files\My First Project-834fa920a8ad.json"
