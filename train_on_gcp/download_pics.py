@@ -110,18 +110,18 @@ if __name__ == '__main__':
     # key_list = ['V neck', 'Sweetheart neck', 'Turtleneck', 'Round neck', 'Boat neck', 'Halter neck',
     #             'Halter strap neck', 'Tailored collar neck', 'straight-across neckline', 'Asymmetric neck']
 
-    # feature_name = 'SkirtLength'
-    # key_list = ['Mini Skirt', 'Knee Skirt', 'Midi Skirt', 'Maxi Skirt', 'Train Skirt', 'Asymmetric Skirt']
+    feature_name = 'SkirtLength'
+    key_list = ['Mini Skirt', 'Knee Skirt', 'Midi Skirt', 'Maxi Skirt', 'Train Skirt', 'Asymmetric Skirt']
 
     # feature_name = 'SleeveLength'
     # key_list = [ 'Short sleeve top', 'Long sleeve top', 'Sleeveless top', 'Off shoulders sleeve top', 'Strapless top',
     #              'One Sleeve top']
 
-    feature_name = 'PantsShape'
-    key_list = ['Jogger Shaped Pants', 'Trousers Shaped Pants', 'Jeans Shaped Pants', 'Leggings Shaped Pants']
+    # feature_name = 'PantsShape'
+    # key_list = ['Jogger Shaped Pants', 'Trousers Shaped Pants', 'Jeans Shaped Pants', 'Leggings Shaped Pants']
 
-    output_path = os.path.join('C:\\Users\\Idan\\Desktop\\AskLily files\\AutoML', feature_name)
-    chrome_driver_path_in = 'chromedriver_new.exe'
-    wanted_number_images = 250
+    output_path = os.path.join('/home/idan/AskLilyData/new_pics', feature_name)
+    chrome_driver_path_in = '/home/idan/PycharmProjects/AskLilyRepo/train_on_gcp/chromedriver'
+    wanted_number_images = 500
     for key in key_list:
         output_signal = search_and_download(key, chrome_driver_path_in, output_path, wanted_number_images)
