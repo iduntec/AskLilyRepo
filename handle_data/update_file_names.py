@@ -7,9 +7,9 @@ def load_folder_images(folder_path):
     images_list = []
     for f in os.listdir(folder_path):
         # taking all extensions since there are only images:
-        # ext = os.path.splitext(f)[1]
-        # if ext.lower() not in [".jpg", ".gif", ".png", ".tga", "jpeg"]:
-        #     continue
+        ext = os.path.splitext(f)[1]
+        if ext.lower() not in [".jpg", ".gif", ".png", ".tga", "jpeg"]:
+            continue
 
         images_list.append(Image.open(os.path.join(folder_path, f)))
 
@@ -27,12 +27,12 @@ def change_file_list_names(pics_list):
     return pics_list
 
 
-def create_new_dir(pics_list):
+def create_new_dir(pics_list, updated_folder_extension):
     current_folder = os.path.split(pics_list[0].filename)[0]
     category_name = current_folder.split("/")[-1]
     father_folder = os.path.split(current_folder)[0]
 
-    output_folder = os.path.join(father_folder, category_name + "_updated_names")
+    output_folder = os.path.join(father_folder, category_name + updated_folder_extension)
     os.mkdir(output_folder)
     return output_folder
 
@@ -48,5 +48,5 @@ if __name__ == '__main__':
     for feature_folder_path in glob(os.path.join(category_folder_path, "*/")):
         images_list = load_folder_images(feature_folder_path)
         images_list_updated_names = change_file_list_names(images_list)
-        output_dir = create_new_dir(images_list_updated_names)
+        output_dir = create_new_dir(images_list_updated_names, "_updated_names")
         save_file_list(output_dir, images_list_updated_names)
